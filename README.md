@@ -1,5 +1,3 @@
-# Transitioned to linuxfromscratch.org  This is no longer updated
-
 # lfs-arm
 Fork of Linux FromScratch Development for ARM
 
