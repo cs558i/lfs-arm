@@ -35,7 +35,7 @@
       </listitem>
     </varlistentry>
 -->
-
+<!--
     <varlistentry>
       <term>Binutils LTO Fix Patch - <token>&binutils-lto-patch-size;</token>:</term>
       <listitem>
@@ -43,7 +43,7 @@
         <para>MD5 sum: <literal>&binutils-lto-patch-md5;</literal></para>
       </listitem>
     </varlistentry>
-
+-->
     <varlistentry>
       <term>Bzip2 Documentation Patch - <token>&bzip2-docs-patch-size;</token>:</term>
       <listitem>
@@ -59,23 +59,24 @@
         <para>MD5 sum: <literal>&coreutils-i18n-patch-md5;</literal></para>
       </listitem>
     </varlistentry>
-
+<!--
     <varlistentry>
       <term>Coreutils Chmod Fix Patch - <token>&coreutils-chmod-patch-size;</token>:</term>
       <listitem>
         <para>Download: <ulink url="&patches-root;&coreutils-chmod-patch;"/></para>
         <para>MD5 sum: <literal>&coreutils-chmod-patch-md5;</literal></para>
       </listitem>
-    </varlistentry>
-<!--
+   </varlistentry>
+-->
+
     <varlistentry>
-      <term>File Upstream Fixes Patch - <token>&file-upstream-fixes-patch-size;</token>:</term>
+      <term>Gcc glibc-2.36 Fixes Patch - <token>&gcc-upstream-fixes-patch-size;</token>:</term>
       <listitem>
-        <para>Download: <ulink url="&patches-root;&file-upstream-fixes-patch;"/></para>
-        <para>MD5 sum: <literal>&file-upstream-fixes-md5;</literal></para>
+        <para>Download: <ulink url="&patches-root;&gcc-upstream-fixes-patch;"/></para>
+        <para>MD5 sum: <literal>&gcc-upstream-fixes-patch-md5;</literal></para>
       </listitem>
     </varlistentry>
--->
+
     <varlistentry>
       <term>Glibc FHS Patch - <token>&glibc-fhs-patch-size;</token>:</term>
       <listitem>
@@ -83,15 +84,7 @@
         <para>MD5 sum: <literal>&glibc-fhs-patch-md5;</literal></para>
       </listitem>
     </varlistentry>
-<!--
-    <varlistentry>
-      <term>GCC Cross Build Fix Patch - <token>&gcc-cross-patch-size;</token>:</term>
-      <listitem>
-        <para>Download: <ulink url="&patches-root;&gcc-cross-patch;"/></para>
-        <para>MD5 sum: <literal>&gcc-cross-patch-md5;</literal></para>
-      </listitem>
-    </varlistentry>
--->
+
     <varlistentry>
       <term>Kbd Backspace/Delete Fix Patch - <token>&kbd-backspace-patch-size;</token>:</term>
       <listitem>
@@ -116,7 +109,7 @@
       </listitem>
     </varlistentry>
 -->
-
+<!--
     <varlistentry>
       <term>Perl Upstream Fix Patch - <token>&perl-fix-patch-size;</token>:</term>
       <listitem>
@@ -124,6 +117,7 @@
         <para>MD5 sum: <literal>&perl-fix-patch-md5;</literal></para>
       </listitem>
     </varlistentry>
+-->
 <!--
     <varlistentry>
       <term>Shadow Segfault Fix Patch - <token>&shadow-segfault-patch-size;</token>:</term>
@@ -141,15 +135,29 @@
       </listitem>
     </varlistentry>
 
-    <!--
     <varlistentry revision="systemd">
-      <term>Systemd Upstream Fixes Patch - <token>&systemd-upstream-fixes-patch-size;</token>:</term>
+      <term>Systemd Upstream Patch - <token>&systemd-upstream-patch-size;</token>:</term>
       <listitem>
-        <para>Download: <ulink url="&patches-root;&systemd-upstream-fixes-patch;"/></para>
-        <para>MD5 sum: <literal>&systemd-upstream-fixes-patch-md5;</literal></para>
+        <para>Download: <ulink url="&patches-root;&systemd-upstream-patch;"/></para>
+        <para>MD5 sum: <literal>&systemd-upstream-patch-md5;</literal></para>
       </listitem>
     </varlistentry>
-    -->
+
+    <varlistentry>
+      <term>Xz Upstream Fix Patch - <token>&xz-upstream-fix-patch-size;</token>:</term>
+      <listitem>
+        <para>Download: <ulink url="&patches-root;&xz-upstream-fix-patch;"/></para>
+        <para>MD5 sum: <literal>&xz-upstream-fix-patch-md5;</literal></para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>Zstd Upstream Fixes Patch - <token>&zstd-upstream-fixes-patch-size;</token>:</term>
+      <listitem>
+        <para>Download: <ulink url="&patches-root;&zstd-upstream-fixes-patch;"/></para>
+        <para>MD5 sum: <literal>&zstd-upstream-fixes-patch-md5;</literal></para>
+      </listitem>
+    </varlistentry>
   </variablelist>
 
   <para>Total size of these patches: about <returnvalue/></para>

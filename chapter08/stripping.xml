@@ -10,7 +10,7 @@
 
   <title>Stripping</title>
 
-  <para>This section is optional.  If the intended user is not a 
+  <para>This section is optional.  If the intended user is not a
   programmer and does not plan to do
   any debugging on the system software, the system size can be decreased
   by about 2 GB by removing the debugging symbols from binaries and
@@ -24,9 +24,9 @@
   backup of the LFS system in its current state.</para>
 
   <para>The debugging symbols for selected libraries are placed
-  in separate files.  This debugging information is needed if running 
-  regression tests that use <ulink 
-  url='&blfs-book;/general/valgrind.html'>valgrind</ulink> or <ulink 
+  in separate files.  This debugging information is needed if running
+  regression tests that use <ulink
+  url='&blfs-book;/general/valgrind.html'>valgrind</ulink> or <ulink
   url='&blfs-book;/general/gdb.html'>gdb</ulink> later in BLFS.
   </para>
 
@@ -40,10 +40,16 @@
   Read the related entry in <xref linkend="pkgmgmt-upgrade-issues"/> for the
   rationale to use the <command>install</command> command here.</para>
 
+  <note><para>The ELF loader's name is ld-linux-aarch64.so.1 on 64-bit systems
+  and ld-linux-armhf.so.3 on 32-bit systems. The construct below selects the
+  correct name for the current architecture, excluding anything ending
+  with <quote>g</quote>, in case the commands below have already been
+  run.</para></note>
+
 <!-- also of interest are libgfortan, libgo, libgomp, and libobjc from GCC -->
 
 <!--<screen><userinput>save_lib="ld-2.25.so libc-2.25.so libpthread-2.25.so libthread_db-1.0.so"-->
-<screen><userinput>save_usrlib="$(cd /usr/lib; ls ld-linux*)
+<screen><userinput>save_usrlib="$(cd /usr/lib; ls ld-linux*[^g])
              libc.so.6
              libthread_db.so.1
              libstdc++.so.&libstdcpp-version;
@@ -88,9 +94,9 @@ for i in $(find /usr/lib -type f -name \*.so* ! -name \*dbg) \
          $(find /usr/lib -type f -name \*.a)                 \
          $(find /usr/{bin,sbin,libexec} -type f); do
     case "$online_usrbin $online_usrlib $save_usrlib" in
-        *$(basename $i)* ) 
+        *$(basename $i)* )
             ;;
-        * ) strip --strip-unneeded $i 
+        * ) strip --strip-unneeded $i
             ;;
     esac
 done
@@ -99,7 +105,7 @@ unset BIN LIB save_usrlib online_usrbin online_usrlib
 </userinput></screen>
 
   <para>A large number of files will be reported as having their file
-  format not recognized. These warnings can be safely ignored. These
-  warnings indicate that those files are scripts instead of binaries.</para>
+  format not recognized. These warnings can be safely ignored. They
+  indicate that those files are scripts instead of binaries.</para>
 
 </sect1>

@@ -51,7 +51,7 @@
     most important tools are working properly.</para>
 
 <!--    <para>Note that the Tcl package used here is a minimal version needed
-    to run the LFS tests.  For the full package, see the  
+    to run the LFS tests.  For the full package, see the
     <ulink url='&blfs-book;general/tcl.html'>BLFS Tcl procedures</ulink>.</para>-->
 
     <para>First, unpack the documentation by issuing the following command:</para>
@@ -63,24 +63,7 @@
 <screen><userinput remap="configure">SRCDIR=$(pwd)
 cd unix
 ./configure --prefix=/usr           \
-            --mandir=/usr/share/man \
-            $([ "$(uname -m)" = aarch64 ] &amp;&amp; echo --enable-64bit)</userinput></screen>
-
-    <variablelist>
-      <title>The meaning of the configure options:</title>
-
-      <varlistentry>
-        <term><parameter>$([ "$(uname -m)" = aarch64 ] &amp;&amp; echo --enable-64bit)</parameter></term>
-        <listitem>
-          <para>The construct <parameter>$(&lt;shell command&gt;)</parameter>
-          is replaced by the output of the shell command.  Here this output is
-          empty if running on a 32 bit machine, and is
-          <parameter>--enable-64bit</parameter> if running on a 64 bit machine.
-          </para>
-        </listitem>
-      </varlistentry>
-
-    </variablelist>
+            --mandir=/usr/share/man</userinput></screen>
 
     <para>Build the package:</para>
 
@@ -112,16 +95,6 @@ unset SRCDIR</userinput></screen>
     <para>To test the results, issue:</para>
 
 <screen><userinput remap="test">make test</userinput></screen>
-<!--
-   <note>
-      <para>
-         In the test results there are several places associated with clock.test
-         that indicate a failure, but the summary at the end indicates no
-         failures. clock.test passes on a complete LFS system.
-      </para>
-    </note>
--->
-    <para>One test, unixInit-1.2, is known to fail.</para>
 
     <para>Install the package:</para>
 
@@ -161,11 +134,11 @@ cp -v -r  ../html/* /usr/share/doc/tcl-&tcl-version;</userinput></screen>
 
       <seglistitem>
         <seg>
-          tclsh (link to tclsh&tcl-major-version;) and 
+          tclsh (link to tclsh&tcl-major-version;) and
           tclsh&tcl-major-version;
         </seg>
         <seg>
-          libtcl&tcl-major-version;.so and 
+          libtcl&tcl-major-version;.so and
           libtclstub&tcl-major-version;.a
         </seg>
       </seglistitem>

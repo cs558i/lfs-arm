@@ -106,31 +106,8 @@
       not work correctly or boot at all:</para>
 
       <screen role="nodump" revision="sysv">General setup -->
+   [ ] Compile the kernel with warnings as errors [CONFIG_WERROR]
    &lt; &gt; Enable kernel headers through /sys/kernel/kheaders.tar.xz [CONFIG_IKHEADERS]
-Device Drivers  ---&gt;
-  Graphics support ---&gt;
-   Frame buffer Devices ---&gt;
-      [*] Support for frame buffer devices ----
-  Generic Driver Options  ---&gt;
-   [ ] Support for uevent helper [CONFIG_UEVENT_HELPER]
-   [*] Maintain a devtmpfs filesystem to mount at /dev [CONFIG_DEVTMPFS]</screen>
-
-      <screen role="nodump" revision="systemd">General setup -->
-   [ ] Auditing Support [CONFIG_AUDIT]
-   &lt; &gt; Enable kernel headers through /sys/kernel/kheaders.tar.xz [CONFIG_IKHEADERS]
-   [*] Control Group support [CONFIG_CGROUPS]
-   [ ] Enable deprecated sysfs features to support old userspace tools [CONFIG_SYSFS_DEPRECATED]
-   [*] Configure standard kernel features (expert users) [CONFIG_EXPERT] ---&gt;
-      [*] open by fhandle syscalls [CONFIG_FHANDLE]
-   CPU/Task time and stats accounting ---&gt;
-      [*] Pressure stall information tracking [CONFIG_PSI]
-Firmware Drivers  ---&gt;
-   [*] Export DMI identification via sysfs to userspace [CONFIG_DMIID]
-General architecture-dependent options  ---&gt;
-   [*] Enable seccomp to safely compute untrusted bytecode [CONFIG_SECCOMP]
-Networking support  ---&gt;
-  Networking options  ---&gt;
-   &lt;*&gt; The IPv6 protocol [CONFIG_IPV6]
 Device Drivers  ---&gt;
   Graphics support ---&gt;
    Frame buffer Devices ---&gt;
@@ -138,12 +115,40 @@ Device Drivers  ---&gt;
   Generic Driver Options  ---&gt;
    [ ] Support for uevent helper [CONFIG_UEVENT_HELPER]
    [*] Maintain a devtmpfs filesystem to mount at /dev [CONFIG_DEVTMPFS]
+   [*]   Automount devtmpfs at /dev, after the kernel mounted the rootfs [CONFIG_DEVTMPFS_MOUNT]</screen>
+
+      <screen role="nodump" revision="systemd">General setup -->
+   [ ] Compile the kernel with warnings as errors [CONFIG_WERROR]
+   [ ] Auditing Support [CONFIG_AUDIT]
+   CPU/Task time and stats accounting ---&gt;
+      [*] Pressure stall information tracking [CONFIG_PSI]
+   &lt; &gt; Enable kernel headers through /sys/kernel/kheaders.tar.xz [CONFIG_IKHEADERS]
+   [*] Control Group support [CONFIG_CGROUPS]   ---&gt;
+      [*] Memory controller [CONFIG_MEMCG]
+   [ ] Enable deprecated sysfs features to support old userspace tools [CONFIG_SYSFS_DEPRECATED]
+   [*] Configure standard kernel features (expert users) [CONFIG_EXPERT] ---&gt;
+      [*] open by fhandle syscalls [CONFIG_FHANDLE]
+General architecture-dependent options  ---&gt;
+   [*] Enable seccomp to safely compute untrusted bytecode [CONFIG_SECCOMP]
+Networking support  ---&gt;
+  Networking options  ---&gt;
+   &lt;*&gt; The IPv6 protocol [CONFIG_IPV6]
+Device Drivers  ---&gt;
+  Generic Driver Options  ---&gt;
+   [ ] Support for uevent helper [CONFIG_UEVENT_HELPER]
+   [*] Maintain a devtmpfs filesystem to mount at /dev [CONFIG_DEVTMPFS]
+   [*]   Automount devtmpfs at /dev, after the kernel mounted the rootfs [CONFIG_DEVTMPFS_MOUNT]
    Firmware Loader ---&gt;
       [ ] Enable the firmware sysfs fallback mechanism [CONFIG_FW_LOADER_USER_HELPER]
+  Firmware Drivers   ---&gt;
+   [*] Export DMI identification via sysfs to userspace [CONFIG_DMIID]
+  Graphics support ---&gt;
+   Frame buffer Devices ---&gt;
+      &lt;*&gt; Support for frame buffer devices ---&gt;
 File systems  ---&gt;
    [*] Inotify support for userspace [CONFIG_INOTIFY_USER]
-  Pseudo filesystems  ---&gt;
-   [*] Tmpfs POSIX Access Control Lists [CONFIG_TMPFS_POSIX_ACL]</screen>
+       Pseudo filesystems  ---&gt;
+        [*] Tmpfs POSIX Access Control Lists [CONFIG_TMPFS_POSIX_ACL]</screen>
     </note>
 
     <note revision="systemd">
@@ -167,6 +172,19 @@ File systems  ---&gt;
 
     <variablelist>
       <title>The rationale for the above configuration items:</title>
+
+      <varlistentry>
+        <term>
+          <parameter>
+            Compile the kernel with warnings as errors
+          </parameter>
+        </term>
+        <listitem>
+          <para>This may cause building failure if the compiler and/or
+          configuration are different from those of the kernel
+          developers.</para>
+        </listitem>
+      </varlistentry>
 
       <varlistentry>
         <term>
@@ -198,6 +216,15 @@ File systems  ---&gt;
         </listitem>
       </varlistentry>
 
+      <varlistentry>
+        <term><parameter>Automount devtmpfs at /dev</parameter></term>
+        <listitem>
+          <para>This will mount the kernel view of the devices on /dev
+          upon switching to root filesystem just before starting
+          init.</para>
+        </listitem>
+      </varlistentry>
+
     </variablelist>
 
     <para>Alternatively, <command>make oldconfig</command> may be more
@@ -211,12 +238,6 @@ File systems  ---&gt;
     we do not recommend this option. It is often better to explore all the
     configuration menus and create the kernel configuration from
     scratch.</para>
-
-    <note revision="systemd">
-      <para revision="systemd">Ensure that CONFIG_DEFAULT_HOSTNAME is set to '(none)' or a hostname.
-      If it is left blank, systemd will fail to set the hostname to the
-      content of <filename>/etc/hostname</filename>.</para>
-    </note>
 
     <para>Compile the kernel image and modules:</para>
 
@@ -242,8 +263,8 @@ File systems  ---&gt;
     <caution>
       <para>If the host system has a separate /boot partition, the files copied
       below should go there. The easiest way to do that is to bind /boot on the
-      host (outside chroot) to /mnt/lfs/boot before proceeding.  As the root
-      user in the <emphasis>host system</emphasis>:</para>
+      host (outside chroot) to /mnt/lfs/boot before proceeding.  As the
+      &root; user in the <emphasis>host system</emphasis>:</para>
 
 <screen role="nodump"><userinput>mount --bind /boot /mnt/lfs/boot</userinput></screen>
     </caution>

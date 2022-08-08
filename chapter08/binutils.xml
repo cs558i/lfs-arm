@@ -56,13 +56,13 @@
 
 <screen><computeroutput>The system has no more ptys.
 Ask your system administrator to create more.</computeroutput></screen>
-
+<!--
     <para>Upstream has made a patch to fix a problem when using binutils
     for building some BLFS packages with Link Time Optimization (LTO)
     enabled.  Apply that now:</para>
 
  <screen><userinput remap="pre">patch -Np1 -i ../&binutils-lto-patch;</userinput></screen>
-
+-->
 <!--
     <para>An error in the building system causes the shipped man pages to
     be empty.  Workaround the issue and remove the shipped man pages, so the
@@ -77,7 +77,7 @@ find -name \*.1 -delete</userinput></screen>
 
 <screen><userinput remap="pre">sed -i '/@\tincremental_copy/d' gold/testsuite/Makefile.in</userinput></screen>
 -->
-    <para>The Binutils documentation recommends building Binutils 
+    <para>The Binutils documentation recommends building Binutils
     in a dedicated build directory:</para>
 
 <screen><userinput remap="pre">mkdir -v build
@@ -86,6 +86,7 @@ cd       build</userinput></screen>
     <para>Prepare Binutils for compilation:</para>
 
 <screen><userinput remap="configure">../configure --prefix=/usr       \
+             --sysconfdir=/etc   \
              --enable-gold       \
              --enable-ld=default \
              --enable-plugins    \
@@ -171,15 +172,13 @@ cd       build</userinput></screen>
     <para>Test the results:</para>
 
 <screen><userinput remap="test">make -k check</userinput></screen>
-<!--
-    <para>Four tests related to zlib are known to fail.</para>
--->
-<!--
-    <para>Seven gold tests are known to fail with gcc-11.1.0</para>
 
-    <para>Four ld tests named <quote>Run property ...</quote> are known to
-    fail.</para>
- -->
+    <!-- Will be fixed in 2.39
+         https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=01ae03b -->
+    <para>One gold test, <filename>pr17704a_test</filename>, is known to
+    fail if <parameter>CONFIG_IA32_EMULATION</parameter> is disabled in the
+    kernel configuration of the host system.</para>
+
     <para>Install the package:</para>
 
 <screen><userinput remap="install">make tooldir=/usr install</userinput></screen>
@@ -301,7 +300,7 @@ cd       build</userinput></screen>
       <varlistentry id="ld.gold">
         <term><command>ld.gold</command></term>
         <listitem>
-          <para>A cut down version of ld that only supports the 
+          <para>A cut down version of ld that only supports the
           elf object file format</para>
           <indexterm zone="ch-system-binutils ld.gold">
             <primary sortas="b-ld.gold">ld.gold</primary>

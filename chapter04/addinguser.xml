@@ -85,15 +85,9 @@ case $(uname -m) in
   aarch64) chown -v lfs $LFS/lib64 ;;
 esac</userinput></screen>
 
-  <para>If a separate working directory was created as suggested, give
-  user <systemitem class="username">lfs</systemitem> ownership of this
-  directory:</para>
-
-<screen><userinput>chown -v lfs $LFS/sources</userinput></screen>
-
   <note><para>In some host systems, the following command does not complete
-  properly and suspends the login to the lfs user to the background.  If the
-  prompt "lfs:~$" does not appear immediately, entering the
+  properly and suspends the login to the &lfs-user; user to the background.
+  If the prompt "lfs:~$" does not appear immediately, entering the
   <command>fg</command> command will fix the issue.</para></note>
 
   <para>Next, login as user <systemitem class="username">lfs</systemitem>.

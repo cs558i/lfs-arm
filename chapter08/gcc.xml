@@ -40,7 +40,7 @@
 
   <sect2 role="installation">
     <title>Installation of GCC</title>
-
+<!--
     <para>At first, fix an issue breaking
     <filename class="libraryfile">libasan.a</filename> building this package
     with Glibc-2.34 or later:</para>
@@ -48,6 +48,10 @@
 <screen><userinput remap="pre">sed -e '/static.*SIGSTKSZ/d' \
     -e 's/return kAltStackSize/return SIGSTKSZ * 4/' \
     -i libsanitizer/sanitizer_common/sanitizer_posix_libcdep.cpp</userinput></screen>
+-->
+    <para>First fix a problem with the latest version of glibc:</para>
+
+    <screen><userinput remap="pre">patch -Np1 -i ../&gcc-upstream-fixes-patch;</userinput></screen>
 
     <para>If building on aarch64, change the default directory name for 64-bit
     libraries to <quote>lib</quote>:</para>
@@ -118,7 +122,7 @@ cd       build</userinput></screen>
 
     <para>Test the results as a non-privileged user, but do not stop at errors:</para>
 
-<screen><userinput remap="test">chown -Rv tester . 
+<screen><userinput remap="test">chown -Rv tester .
 su tester -c "PATH=$PATH make -k check"</userinput></screen>
 
     <para>To receive a summary of the test suite results, run:</para>
@@ -132,21 +136,9 @@ su tester -c "PATH=$PATH make -k check"</userinput></screen>
     url="&test-results;"/> and
     <ulink url="https://gcc.gnu.org/ml/gcc-testresults/"/>.</para>
 
-    <!-- https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101081 -->
-    <para>Eight tests related to analyzer are known to fail.</para>
-
-    <!-- https://gcc.gnu.org/bugzilla/show_bug.cgi?id=101751 -->
-    <para>One test named <filename>asan_test.C</filename> is known to
-    fail.</para>
-
-    <!-- https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100117 -->
-    <para>In libstdc++, one test named <filename>49745.cc</filename> is
-    known to fail because the header dependencies in glibc have
-    changed.</para>
-
-    <para>In libstdc++, one numpunct test and six tests related to get_time are
-    known to fail.  These are all because the locale definitions in glibc have
-    changed but libstdc++ does not currently support those changes.</para>
+    <para>In g++, four tests related to PR100400 are known to be reported
+    as both XPASS and FAIL.  It's because the test file for this known issue
+    is not well written.</para>
 
     <para>A few unexpected failures cannot always be avoided. The GCC developers
     are usually aware of these issues, but have not resolved them yet.
@@ -162,11 +154,9 @@ su tester -c "PATH=$PATH make -k check"</userinput></screen>
       is not enabled in the kernel even though it is present on the CPU.
     </para></note-->
 
-    <!-- PR 91085, will be fixed in GCC 12. -->
-    <para>Install the package and remove an unneeded directory:</para>
+    <para>Install the package:</para>
 
-<screen><userinput remap="install">make install
-rm -rf /usr/lib/gcc/$(gcc -dumpmachine)/&gcc-version;/include-fixed/bits/</userinput></screen>
+<screen><userinput remap="install">make install</userinput></screen>
 
     <para>The GCC build directory is owned by <systemitem class="username">
     tester</systemitem> now and the ownership of the installed header
@@ -174,7 +164,7 @@ rm -rf /usr/lib/gcc/$(gcc -dumpmachine)/&gcc-version;/include-fixed/bits/</useri
     <systemitem class="username">root</systemitem> user and group:</para>
 
 <screen><userinput remap="install">chown -v -R root:root \
-    /usr/lib/gcc/*linux-gnu/&gcc-version;/include{,-fixed}</userinput></screen>
+    /usr/lib/gcc/$(gcc -dumpmachine)/&gcc-version;/include{,-fixed}</userinput></screen>
 
     <para>Create a symlink required by the <ulink
     url="https://refspecs.linuxfoundation.org/FHS_3.0/fhs/ch03s09.html">FHS</ulink>
@@ -188,7 +178,7 @@ rm -rf /usr/lib/gcc/$(gcc -dumpmachine)/&gcc-version;/include-fixed/bits/</useri
 <screen><userinput remap="install">ln -sv gcc /usr/bin/cc</userinput></screen>
   -->
     <para>Add a compatibility symlink to enable building programs with
-    Link Time Optimization (LTO):</para> 
+    Link Time Optimization (LTO):</para>
 
 <screen><userinput remap="install">ln -sfv ../../libexec/gcc/$(gcc -dumpmachine)/&gcc-version;/liblto_plugin.so \
         /usr/lib/bfd-plugins/</userinput></screen>
@@ -197,29 +187,21 @@ rm -rf /usr/lib/gcc/$(gcc -dumpmachine)/&gcc-version;/include-fixed/bits/</useri
     that compiling and linking will work as expected. We do this by performing
     some sanity checks:</para>
 
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="adjusting.xml"
-    xpointer="xpointer(//*[@os='a'])"/>
+<screen><userinput>echo 'int main(){}' &gt; dummy.c
+cc dummy.c -v -Wl,--verbose &amp;&gt; dummy.log
+readelf -l a.out | grep ': /lib'</userinput></screen>
 
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="adjusting.xml"
-    xpointer="xpointer(//*[@os='b'])"/>
+  <para>There should be no errors,
+  and the output of the last command will be (allowing for
+  platform-specific differences in the dynamic linker name):</para>
 
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="adjusting.xml"
-    xpointer="xpointer(//*[@os='c'])"/>
+<screen><computeroutput>[Requesting program interpreter: /lib64/ld-linux-aarch64.so.1]</computeroutput></screen>
 
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="adjusting.xml"
-    xpointer="xpointer(//*[@os='d'])"/>
+  <para>Now make sure that we're setup to use the correct start files:</para>
 
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="adjusting.xml"
-    xpointer="xpointer(//*[@os='e'])"/>
+<screen><userinput>grep -o '/usr/lib.*/crt[1in].*succeeded' dummy.log</userinput></screen>
 
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="adjusting.xml"
-    xpointer="xpointer(//*[@os='f'])"/>
+  <para>The output of the last command should be:</para>
 
 <screen><computeroutput>/usr/lib/gcc/aarch64-unknown-linux-gnu/&gcc-version;/../../../../lib/crt1.o succeeded
 /usr/lib/gcc/aarch64-unknown-linux-gnu/&gcc-version;/../../../../lib/crti.o succeeded
@@ -232,18 +214,15 @@ rm -rf /usr/lib/gcc/$(gcc -dumpmachine)/&gcc-version;/include-fixed/bits/</useri
   <filename>crt*.o</filename> files under the
   <filename class="directory">/usr/lib</filename> directory.</para>
 
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="adjusting.xml"
-    xpointer="xpointer(//*[@os='g'])"/>
+  <para>Verify that the compiler is searching for the correct header
+  files:</para>
 
 <screen><userinput>grep -B4 '^ /usr/include' dummy.log</userinput></screen>
 
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="adjusting.xml"
-    xpointer="xpointer(//*[@os='h'])"/>
+  <para>This command should return the following output:</para>
 
 <screen><computeroutput>#include &lt;...&gt; search starts here:
- /usr/lib/gcc/aarch-64-unknown-linux-gnu/&gcc-version;/include
+ /usr/lib/gcc/aarch64-unknown-linux-gnu/&gcc-version;/include
  /usr/local/include
  /usr/lib/gcc/aarch64-unknown-linux-gnu/&gcc-version;/include-fixed
  /usr/include</computeroutput></screen>
@@ -251,17 +230,12 @@ rm -rf /usr/lib/gcc/$(gcc -dumpmachine)/&gcc-version;/include-fixed/bits/</useri
    <para>Again, the directory named after your target triplet may be
    different than the above, depending on your system architecture.</para>
 
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="adjusting.xml"
-    xpointer="xpointer(//*[@os='i'])"/>
+  <para>Next, verify that the new linker is being used with the correct search paths:</para>
 
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="adjusting.xml"
-    xpointer="xpointer(//*[@os='j'])"/>
+<screen><userinput>grep 'SEARCH.*/usr/lib' dummy.log |sed 's|; |\n|g'</userinput></screen>
 
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="adjusting.xml"
-    xpointer="xpointer(//*[@os='k'])"/>
+  <para>References to paths that have components with '-linux-gnu' should
+  be ignored, but otherwise the output of the last command should be:</para>
 
 <screen><computeroutput>SEARCH_DIR("/usr/aarch64-unknown-linux-gnu/lib64")
 SEARCH_DIR("/usr/local/lib64")
@@ -280,49 +254,32 @@ SEARCH_DIR("/usr/local/lib")
 SEARCH_DIR("/lib")
 SEARCH_DIR("/usr/lib");</computeroutput></screen>
 
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="adjusting.xml"
-    xpointer="xpointer(//*[@os='l'])"/>
+  <para>Next make sure that we're using the correct libc:</para>
 
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="adjusting.xml"
-    xpointer="xpointer(//*[@os='m'])"/>
+<screen><userinput>grep "/lib.*/libc.so.6 " dummy.log</userinput></screen>
 
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="adjusting.xml"
-    xpointer="xpointer(//*[@os='n'])"/>
+  <para>The output of the last command should be:</para>
 
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="adjusting.xml"
-    xpointer="xpointer(//*[@os='o'])"/>
+<screen><computeroutput>attempt to open /usr/lib/libc.so.6 succeeded</computeroutput></screen>
 
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="adjusting.xml"
-    xpointer="xpointer(//*[@os='p'])"/>
+  <para>Make sure GCC is using the correct dynamic linker:</para>
 
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="adjusting.xml"
-    xpointer="xpointer(//*[@os='q'])"/>
+<screen><userinput>grep found dummy.log</userinput></screen>
 
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="adjusting.xml"
-    xpointer="xpointer(//*[@os='r'])"/>
+  <para>The output of the last command should be (allowing for
+  platform-specific differences in dynamic linker name):</para>
 
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="adjusting.xml"
-    xpointer="xpointer(//*[@os='s'])"/>
+<screen><computeroutput>found ld-linux-aarch64.so.1 at /usr/lib/ld-linux-aarch64.so.1</computeroutput></screen>
 
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="adjusting.xml"
-    xpointer="xpointer(//*[@os='t'])"/>
+  <para>If the output does not appear as shown above or is not received
+  at all, then something is seriously wrong. Investigate and retrace the
+  steps to find out where the problem is and correct it. <!--The most likely
+  reason is that something went wrong with the specs file adjustment.--> Any
+  issues will need to be resolved before continuing with the process.</para>
 
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="adjusting.xml"
-    xpointer="xpointer(//*[@os='u'])"/>
+  <para>Once everything is working correctly, clean up the test files:</para>
 
-    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-    href="adjusting.xml"
-    xpointer="xpointer(//*[@os='v'])"/>
+<screen><userinput>rm -v dummy.c a.out dummy.log</userinput></screen>
 
     <para>Finally, move a misplaced file:</para>
 
@@ -351,7 +308,7 @@ mv -v /usr/lib/*gdb.py /usr/share/gdb/auto-load/usr/lib</userinput></screen>
         libstdc++.{a,so}, libstdc++fs.a, libsupc++.a, libtsan.{a,so},
         and libubsan.{a,so}</seg>
 
-        <seg>/usr/include/c++, /usr/lib/gcc, /usr/libexec/gcc, and 
+        <seg>/usr/include/c++, /usr/lib/gcc, /usr/libexec/gcc, and
         /usr/share/gcc-&gcc-version;</seg>
       </seglistitem>
     </segmentedlist>

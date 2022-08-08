@@ -56,15 +56,10 @@
    <!-- this has been fixed in upstream gnulib, when a new version of
    coreutils is released, please check #4055 to see if the change has been
    picked up in this package -->
-
+<!--
    <para>Now, fix a problem with chmod return values:</para>
 
 <screen><userinput remap="pre">patch -Np1 -i ../&coreutils-chmod-patch;</userinput></screen>
-
-<!--
-<para>Fix a problem with autoconf-2.70 in an included gnulib .m4 file:</para>
-
-<screen><userinput remap="pre">echo '# deleted' > m4/std-gnu11.m4</userinput></screen>
 -->
     <para>Now prepare Coreutils for compilation:</para>
 
@@ -88,7 +83,7 @@ FORCE_UNSAFE_CONFIGURE=1 ./configure \
       <varlistentry>
         <term><envar>FORCE_UNSAFE_CONFIGURE=1</envar></term>
         <listitem>
-          <para>This environment variable allows the package to be 
+          <para>This environment variable allows the package to be
           built as the <systemitem class="username">root</systemitem> user.
           </para>
         </listitem>
@@ -124,17 +119,21 @@ FORCE_UNSAFE_CONFIGURE=1 ./configure \
 
 <screen><userinput remap="test">echo "dummy:x:102:tester" &gt;&gt; /etc/group</userinput></screen>
 
-    <para>Fix some of the permissions so that the non-root user can compile and
-    run the tests:</para>
+    <para>Fix some of the permissions so that the non-&root; user can
+    compile and run the tests:</para>
 
 <screen><userinput remap="test">chown -Rv tester . </userinput></screen>
 
     <para>Now run the tests:</para>
 
 <screen><userinput remap="test">su tester -c "PATH=$PATH make RUN_EXPENSIVE_TESTS=yes check"</userinput></screen>
-<!--
+
+<!-- test-getlogin is now skipped
     <para>The test-getlogin test is known to fail in the LFS chroot environment.</para>
 -->
+<!-- should be fixed at next release, coreutils-9.2 -->
+    <para>The sort-NaN-infloop test is known to fail with GCC-12.</para>
+
     <para>Remove the temporary group:</para>
 
 <screen><userinput remap="test">sed -i '/dummy/d' /etc/group</userinput></screen>

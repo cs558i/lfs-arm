@@ -73,7 +73,7 @@
 
 <screen><userinput remap="test">chown -Rv tester .</userinput></screen>
 
-    <para>The testsuite of the package is designed to be run as a non-root
+    <para>The testsuite of the package is designed to be run as a non-&root;
     user that owns the terminal connected to standard input.  To satisfy the
     requirement, spawn a new pseudo terminal using
     <application>Expect</application> and run the tests as the <systemitem
@@ -94,7 +94,7 @@ EOF</userinput></screen>
     <para>Run the newly compiled <command>bash</command> program (replacing the one that is
     currently being executed):</para>
 
-<screen role="nodump"><userinput>exec /usr/bin/bash --login</userinput></screen>
+ <screen role="nodump"><userinput>exec /usr/bin/bash --login</userinput></screen>
 
   </sect2>
 

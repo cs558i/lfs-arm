@@ -44,6 +44,10 @@
   <sect2 role="installation">
     <title>Installation of Xz</title>
 
+    <para>Apply a patch to fix an issue in xzgrep:</para>
+
+<screen><userinput remap="pre">patch -Np1 -i ../&xz-upstream-fix-patch;</userinput></screen>
+
     <para>Prepare Xz for compilation with:</para>
 
 <screen><userinput remap="configure">./configure --prefix=/usr    \
@@ -74,34 +78,34 @@
 
       <seglistitem>
         <seg>
-          lzcat (link to xz), 
-          lzcmp (link to xzdiff), 
-          lzdiff (link to xzdiff), 
-          lzegrep (link to xzgrep), 
+          lzcat (link to xz),
+          lzcmp (link to xzdiff),
+          lzdiff (link to xzdiff),
+          lzegrep (link to xzgrep),
           lzfgrep (link to xzgrep),
-          lzgrep (link to xzgrep), 
-          lzless (link to xzless), 
+          lzgrep (link to xzgrep),
+          lzless (link to xzless),
           lzma (link to xz),
-          lzmadec, 
-          lzmainfo, 
+          lzmadec,
+          lzmainfo,
           lzmore (link to xzmore),
-          unlzma (link to xz), 
-          unxz (link to xz), 
-          xz, 
+          unlzma (link to xz),
+          unxz (link to xz),
+          xz,
           xzcat (link to xz),
-          xzcmp (link to xzdiff), 
-          xzdec, 
-          xzdiff, 
+          xzcmp (link to xzdiff),
+          xzdec,
+          xzdiff,
           xzegrep (link to xzgrep),
-          xzfgrep (link to xzgrep), 
-          xzgrep, 
-          xzless, and 
+          xzfgrep (link to xzgrep),
+          xzgrep,
+          xzless, and
           xzmore</seg>
         <seg>
           liblzma.so
         </seg>
         <seg>
-          /usr/include/lzma and 
+          /usr/include/lzma and
           /usr/share/doc/xz-&xz-version;
          </seg>
       </seglistitem>

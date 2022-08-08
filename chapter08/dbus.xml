@@ -51,28 +51,19 @@
 <screen><userinput remap="configure">./configure --prefix=/usr                        \
             --sysconfdir=/etc                    \
             --localstatedir=/var                 \
+            --runstatedir=/run                   \
             --disable-static                     \
             --disable-doxygen-docs               \
             --disable-xml-docs                   \
             --docdir=/usr/share/doc/dbus-&dbus-version; \
-            --with-console-auth-dir=/run/console \
-            --with-system-pid-file=/run/dbus/pid \
             --with-system-socket=/run/dbus/system_bus_socket</userinput></screen>
 
     <variablelist>
       <title>The meaning of the configure options:</title>
 
       <varlistentry>
-        <term><parameter>--with-console-auth-dir=/run/console</parameter></term>
-        <listitem>
-          <para>This specifies the location of the ConsoleKit authorization
-          directory.</para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
         <term>
-          <parameter>--with-system-pid-file=/run/dbus/pid</parameter> and
+          <parameter>--runstatedir=/run</parameter> and
           <parameter>--with-system-socket=/run/dbus/system_bus_socket</parameter>
         </term>
         <listitem>
@@ -114,7 +105,7 @@
 
       <seglistitem>
         <seg>dbus-cleanup-sockets, dbus-daemon, dbus-launch, dbus-monitor,
-        dbus-run-session, dbus-send, dbus-test-tool, 
+        dbus-run-session, dbus-send, dbus-test-tool,
         dbus-update-activation-environment, and dbus-uuidgen</seg>
         <seg>libdbus-1.{a,so}</seg>
         <seg>/etc/dbus-1, /usr/include/dbus-1.0, /usr/lib/dbus-1.0,

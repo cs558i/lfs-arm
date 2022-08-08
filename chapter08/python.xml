@@ -48,7 +48,6 @@
             --enable-shared      \
             --with-system-expat  \
             --with-system-ffi    \
-            --with-ensurepip=yes \
             --enable-optimizations</userinput></screen>
 
     <variablelist>
@@ -67,14 +66,6 @@
       <listitem>
         <para>This switch enables linking against system version of
         <application>libffi</application>.</para>
-      </listitem>
-    </varlistentry>
-
-    <varlistentry>
-      <term><parameter>--with-ensurepip=yes</parameter></term>
-      <listitem>
-        <para>This switch enables building <command>pip</command> and
-        <command>setuptools</command> packaging programs.</para>
       </listitem>
     </varlistentry>
 
@@ -101,9 +92,49 @@
 
 <screen><userinput remap="install">make install</userinput></screen>
 
+    <para>In several places we use the <command>pip3</command> command to
+    install Python 3 programs and modules for all users as
+    <systemitem class='username'>root</systemitem>. This conflicts
+    with the Python developers recommendation to install packages into a
+    virtual environment or the home directory of a regular user (by running
+    <command>pip3</command> as this user). To this end, a multi-line warning
+    is written when using <command>pip3</command> as the
+    <systemitem class='username'>root</systemitem> user.  The main reason
+    of this recommendation is for avoiding a conflict with the system
+    package manager (<command>dpkg</command> for example), but LFS does not
+    have a system-wide package manager so this is not a problem.  If desired,
+    suppress this warning by running the following command:</para>
+
+<screen><userinput remap="install">sed -e '/def warn_if_run_as_root/a\    return' \
+    -i /usr/lib/python3.10/site-packages/pip/_internal/cli/req_command.py
+</userinput></screen>
+
+    <important>
+      <para>
+        In LFS and BLFS we normally build and install Python modules with the
+        <command>pip3</command> command.  Please take care that the
+        <command>pip3 install</command> commands in both the books should be
+        run as the &root; user unless it's for a Python virtual environment.
+        Running a <command>pip3 install</command> as a non-&root; user may seem
+        to work fine, but it will cause the installed module to be inaccessible
+        by other users.
+      </para>
+
+      <para>
+        <command>pip3 install</command> will not reinstall an already installed
+        module by default.  For using the <command>pip3 install</command>
+        command to upgrade a module (for example, from meson-0.61.3 to
+        meson-0.62.0), insert the option <parameter>--upgrade</parameter> into
+        the command line.  If it's really necessary to downgrade a module or
+        reinstall the same version for some reason, insert
+        <parameter>--force-reinstall --no-deps</parameter> into the command
+        line.
+      </para>
+    </important>
+
     <para>If desired, install the preformatted documentation:</para>
 
-<screen><userinput remap="install">install -v -dm755 /usr/share/doc/python-&python-version;/html 
+<screen><userinput remap="install">install -v -dm755 /usr/share/doc/python-&python-version;/html
 
 tar --strip-components=1  \
     --no-same-owner       \
@@ -117,9 +148,9 @@ tar --strip-components=1  \
     <varlistentry>
       <term><option>--no-same-owner</option> and <option>--no-same-permissions</option></term>
       <listitem>
-        <para>Ensure the installed files have the correct ownership and 
+        <para>Ensure the installed files have the correct ownership and
         permissions.  Without these options, using <application>tar</application>
-        will install the package files with the upstream creator's values. 
+        will install the package files with the upstream creator's values.
         </para>
       </listitem>
     </varlistentry>
@@ -144,7 +175,7 @@ tar --strip-components=1  \
           libpython&python-minor;.so and libpython3.so
         </seg>
         <seg>
-          /usr/include/python&python-minor;, 
+          /usr/include/python&python-minor;,
           /usr/lib/python3, and
           /usr/share/doc/python-&python-version;
         </seg>
@@ -162,7 +193,7 @@ tar --strip-components=1  \
           <para>
             is a <application>Python</application> program that reads
             <application>Python 2.x</application> source code and applies a
-            series of fixes to transform it into 
+            series of fixes to transform it into
             valid <application>Python 3.x</application> code
           </para>
           <indexterm zone="ch-system-Python">

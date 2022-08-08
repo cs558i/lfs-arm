@@ -33,7 +33,7 @@
 
 <screen><userinput>find /usr -depth -name $(uname -m)-lfs-linux-gnu\* | xargs rm -rf</userinput></screen>
 
-   <para>Finally, remove the temporary 'tester' user account created at the 
+   <para>Finally, remove the temporary 'tester' user account created at the
    beginning of the previous chapter.</para>
 
 <screen><userinput>userdel -r tester</userinput></screen>

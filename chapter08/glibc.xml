@@ -47,7 +47,7 @@
     <para>First, fix a security problem identified upstream:</para>
 
     <screen><userinput remap="pre">sed -e '/NOTIFY_REMOVED)/s/)/ \&amp;\&amp; data.attr != NULL)/' \
-    -i sysdeps/unix/sysv/linux/mq_notify.c</userinput></screen> 
+    -i sysdeps/unix/sysv/linux/mq_notify.c</userinput></screen>
 -->
 
     <para>Some of the Glibc programs use the non-FHS compliant
@@ -57,14 +57,14 @@
 
 <screen><userinput remap="pre">patch -Np1 -i ../&glibc-fhs-patch;</userinput></screen>
 
-    <para>The Glibc documentation recommends building Glibc 
+    <para>The Glibc documentation recommends building Glibc
     in a dedicated build directory:</para>
 
 <screen><userinput remap="pre">mkdir -v build
 cd       build</userinput></screen>
 
     <para>Ensure that the <command>ldconfig</command> and <command>sln</command>
-    utilites will be installed into
+    utilities will be installed into
     <filename class="directory">/usr/sbin</filename>:</para>
 
 <screen><userinput remap="pre">echo "rootsbindir=/usr/sbin" &gt; configparms</userinput></screen>
@@ -84,7 +84,7 @@ cd       build</userinput></screen>
       <varlistentry>
         <term><parameter>--disable-werror</parameter></term>
         <listitem>
-          <para>This option disables the -Werror option passed to 
+          <para>This option disables the -Werror option passed to
           GCC.  This is necessary for running the test suite.</para>
         </listitem>
       </varlistentry>
@@ -102,7 +102,7 @@ cd       build</userinput></screen>
       <varlistentry>
         <term><parameter>--enable-stack-protector=strong</parameter></term>
         <listitem>
-          <para>This option increases system security by adding 
+          <para>This option increases system security by adding
           extra code to check for buffer overflows, such as stack
           smashing attacks.</para>
         </listitem>
@@ -152,32 +152,49 @@ esac</userinput></screen>
 
     <para>You may see some test failures. The Glibc test suite is
     somewhat dependent on the host system. A few failures out of
-    over 4200 tests can generally be ignored. This is a list of the 
+    over 4200 tests can generally be ignored. This is a list of the
     most common issues seen for recent versions of LFS:</para>
 
     <itemizedlist>
 
       <listitem>
-        <para><emphasis>io/tst-lchmod</emphasis> 
+        <para><emphasis>io/tst-lchmod</emphasis>
         is known to fail in the LFS chroot environment.</para>
       </listitem>
 
       <listitem>
-        <para><emphasis>misc/tst-ttyname</emphasis> 
+        <para><emphasis>misc/tst-ttyname</emphasis>
         is known to fail in the LFS chroot environment.</para>
       </listitem>
 
       <listitem>
-        <para>The <emphasis>nss/tst-nss-files-hosts-multi</emphasis>
+        <para>The <emphasis>nss/tst-nss-files-hosts-long</emphasis>
         test is known to fail if the system has no non-loopback IP
-        addresses.</para>
+        addresses.</para> <!-- PR 24816 -->
       </listitem>
 
+      <listitem>
+        <para>Some tests, for example
+        <emphasis>nss/tst-nss-files-hosts-multi</emphasis>,
+        are known to fail on relatively slow systems due to an internal
+        timeout.</para>
+      </listitem>
+
+      <!--
+        https://lists.linuxfromscratch.org/sympa/arc/lfs-support/2022-06/msg00022.html
+        https://sourceware.org/pipermail/libc-alpha/2022-June/139839.html
+      -->
+      <listitem>
+        <para>About 27 tests, for example <emphasis>elf/tst-pldd</emphasis>,
+        are known to fail if the kernel supports namespaces (see
+        <filename>namespaces(7)</filename> for details) but the host distro
+        has disabled them via sysctl.</para>
+      </listitem>
 <!--
       <listitem>
         <para>The <emphasis>rt/tst-cputimer{1,2,3}</emphasis> tests depend on
         the host system kernel. Kernels 4.14.91&ndash;4.14.96,
-        4.19.13&ndash;4.19.18, and 4.20.0&ndash;4.20.5 are known to 
+        4.19.13&ndash;4.19.18, and 4.20.0&ndash;4.20.5 are known to
         cause these tests to fail.
         </para>
       </listitem>
@@ -217,7 +234,7 @@ esac</userinput></screen>
 <screen><userinput remap="install">cp -v ../nscd/nscd.conf /etc/nscd.conf
 mkdir -pv /var/cache/nscd</userinput></screen>
 
-    <para revision="systemd">Install the systemd support files for 
+    <para revision="systemd">Install the systemd support files for
     <command>nscd</command>:</para>
 
     <screen revision="systemd"><userinput remap="install">install -v -Dm644 ../nscd/nscd.tmpfiles /usr/lib/tmpfiles.d/nscd.conf
@@ -264,7 +281,7 @@ localedef -i it_IT -f ISO-8859-1 it_IT
 localedef -i it_IT -f ISO-8859-15 it_IT@euro
 localedef -i it_IT -f UTF-8 it_IT.UTF-8
 localedef -i ja_JP -f EUC-JP ja_JP
-localedef -i ja_JP -f SHIFT_JIS ja_JP.SIJS 2> /dev/null || true
+localedef -i ja_JP -f SHIFT_JIS ja_JP.SJIS 2> /dev/null || true
 localedef -i ja_JP -f UTF-8 ja_JP.UTF-8
 localedef -i nl_NL@euro -f ISO-8859-15 nl_NL@euro
 localedef -i ru_RU -f KOI8-R ru_RU.KOI8-R
@@ -291,13 +308,13 @@ localedef -i zh_TW -f UTF-8 zh_TW.UTF-8</userinput></screen>
     <filename>glibc-&glibc-version;/localedata/SUPPORTED</filename> file
     when you need them. For instance, the following two locales are
     needed for some tests later in this chapter:</para>
- 
-<screen role="nodump"><userinput remap="locale-full">localedef -i POSIX -f UTF-8 C.UTF-8 2> /dev/null || true
-localedef -i ja_JP -f SHIFT_JIS ja_JP.SIJS 2> /dev/null || true</userinput></screen>
 
-    <note><para>Glibc now uses libidn2 when resolving internationalized 
+<screen role="nodump"><userinput remap="locale-full">localedef -i POSIX -f UTF-8 C.UTF-8 2> /dev/null || true
+localedef -i ja_JP -f SHIFT_JIS ja_JP.SJIS 2> /dev/null || true</userinput></screen>
+
+    <note><para>Glibc now uses libidn2 when resolving internationalized
     domain names.  This is a run time dependency.  If this capability
-    is needed, the instructions for installing libidn2 are in the 
+    is needed, the instructions for installing libidn2 are in the
     <ulink url="&blfs-book;general/libidn2.html">BLFS libidn2 page</ulink>.
     </para></note>
 
@@ -435,7 +452,7 @@ unset ZONEINFO</userinput></screen>
     </indexterm>
 
     <para>By default, the dynamic loader (<filename
-    class="libraryfile">/lib/ld-linux-armhf.so.3 
+    class="libraryfile">/lib/ld-linux-armhf.so.3
     /lib/ld-linux-aarch64.so.1</filename>) searches through
     <filename class="directory">/lib</filename> and <filename
     class="directory">/usr/lib</filename> for dynamic libraries that are
@@ -873,7 +890,7 @@ mkdir -pv /etc/ld.so.conf.d</userinput></screen>
       <varlistentry id="libnsl">
         <term><filename class="libraryfile">libnsl</filename></term>
         <listitem>
-          <para>The network services library, no deprecated</para>
+          <para>The network services library, now deprecated</para>
           <indexterm zone="ch-system-glibc libnsl">
             <primary sortas="c-libnsl">libnsl</primary>
           </indexterm>

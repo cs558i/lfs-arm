@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 if [ "$1" = sysv ]; then
 	SYSV="INCLUDE"
@@ -47,7 +47,7 @@ esac
 
 full_date="$month $day$suffix, $year"
 
-sha="$(git describe --always --abbrev=1)"
+sha="$(git describe --abbrev=1)"
 rev=$(echo "$sha" | sed 's/-g[^-]*$//')
 version="$rev"
 versiond="$rev-systemd"

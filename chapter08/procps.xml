@@ -25,14 +25,6 @@
 
     <para>The Procps-ng package contains programs for monitoring processes.</para>
 
-    <!-- TODO This note will probably not be needed at the next revision. -->
-    <note>
-      <para>This package extracts to the directory
-      <filename class="directory">procps-3.3.17</filename>, 
-      not the expected
-      <filename class="directory">procps-ng-3.3.17</filename>.</para>
-    </note>
-
     <segmentedlist>
       <segtitle>&buildtime;</segtitle>
       <segtitle>&diskspace;</segtitle>
@@ -91,9 +83,16 @@ make check</userinput></screen>
 
 <screen><userinput remap="test">make check</userinput></screen>
 
-    <para>Five tests related to pkill are known to fail due to a problem
-    with tests that were not updated.</para>
- 
+    <!-- It's because "free -v" shows "used" greater than "total", and
+         a negative "free" for "Comm" line.  The "total" value is from
+         "CommitLimit" in /proc/meminfo, which is the limit for one process.
+         But the "used" value is from "Committed_AS" in the same file,
+         which is the total commited virtual memory space of all processes.
+         I'll make a report to upstream anyway.  -->
+    <para>One test named <filename>free with commit</filename>
+    may fail if some applications with a custom memory allocator (for
+    example, JVM and Web browsers) are running on the host distro.</para>
+
     <para>Install the package:</para>
 
 <screen><userinput remap="install">make install</userinput></screen>
@@ -111,8 +110,8 @@ make check</userinput></screen>
       <seglistitem>
         <seg>free, pgrep, pidof, pkill, pmap, ps, pwdx, slabtop,
         sysctl, tload, top, uptime, vmstat, w, and watch</seg>
-        <seg>libprocps.so</seg>
-        <seg>/usr/include/proc and /usr/share/doc/procps-ng-&procps-ng-version;</seg>
+        <seg>libproc-2.so</seg>
+        <seg>/usr/include/procps and /usr/share/doc/procps-ng-&procps-ng-version;</seg>
       </seglistitem>
     </segmentedlist>
 
@@ -289,13 +288,13 @@ make check</userinput></screen>
         </listitem>
       </varlistentry>
 
-      <varlistentry id="libprocps">
-        <term><filename class="libraryfile">libprocps</filename></term>
+      <varlistentry id="libproc-2">
+        <term><filename class="libraryfile">libproc-2</filename></term>
         <listitem>
           <para>Contains the functions used by most programs in this
           package</para>
-          <indexterm zone="ch-system-procps libprocps">
-            <primary sortas="c-libprocps">libprocps</primary>
+          <indexterm zone="ch-system-procps libproc-2">
+            <primary sortas="c-libproc-2">libproc-2</primary>
           </indexterm>
         </listitem>
       </varlistentry>

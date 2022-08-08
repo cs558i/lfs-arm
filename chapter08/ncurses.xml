@@ -48,6 +48,7 @@
             --with-shared           \
             --without-debug         \
             --without-normal        \
+            --with-cxx-shared       \
             --enable-pc-files       \
             --enable-widec          \
             --with-pkg-config-libdir=/usr/lib/pkgconfig</userinput></screen>
@@ -56,16 +57,33 @@
       <title>The meaning of the new configure options:</title>
 
       <varlistentry>
-        <term><parameter>--enable-widec</parameter></term>
+        <term><parameter>--with-shared</parameter></term>
         <listitem>
-          <para>This switch causes wide-character libraries (e.g., <filename
-          class="libraryfile">libncursesw.so.&ncurses-version;</filename>)
-          to be built instead of normal ones (e.g., <filename
-          class="libraryfile">libncurses.so.&ncurses-version;</filename>).
-          These wide-character libraries are usable in both multibyte and
-          traditional 8-bit locales, while normal libraries work properly
-          only in 8-bit locales. Wide-character and normal libraries are
-          source-compatible, but not binary-compatible.</para>
+          <para>This makes Ncurses build and install shared C libraries.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>--without-normal</parameter></term>
+        <listitem>
+          <para>This prevents Ncurses building and installing static C
+          libraries.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>--without-debug</parameter></term>
+        <listitem>
+          <para>This prevents Ncurses building and installing debug
+          libraries.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><parameter>--with-cxx-shared</parameter></term>
+        <listitem>
+          <para>This makes Ncurses build and install shared C++ bindings. It
+          also prevents it building and installing static C++ bindings.</para>
         </listitem>
       </varlistentry>
 
@@ -78,10 +96,16 @@
       </varlistentry>
 
       <varlistentry>
-        <term><parameter>--without-normal</parameter></term>
+        <term><parameter>--enable-widec</parameter></term>
         <listitem>
-          <para>This switch disables building and installing most static libraries.
-          </para>
+          <para>This switch causes wide-character libraries (e.g., <filename
+          class="libraryfile">libncursesw.so.&ncurses-version;</filename>)
+          to be built instead of normal ones (e.g., <filename
+          class="libraryfile">libncurses.so.&ncurses-version;</filename>).
+          These wide-character libraries are usable in both multibyte and
+          traditional 8-bit locales, while normal libraries work properly
+          only in 8-bit locales. Wide-character and normal libraries are
+          source-compatible, but not binary-compatible.</para>
         </listitem>
       </varlistentry>
 
@@ -112,7 +136,7 @@
 
 <screen><userinput remap="install">make DESTDIR=$PWD/dest install
 install -vm755 dest/usr/lib/libncursesw.so.&ncurses-version; /usr/lib
-rm -v  dest/usr/lib/{libncursesw.so.&ncurses-version;,libncurses++w.a}
+rm -v  dest/usr/lib/libncursesw.so.&ncurses-version;
 cp -av dest/* /</userinput></screen>
 
     <para>Many applications still expect the linker to be able to find
@@ -143,7 +167,7 @@ cp -v -R doc/* /usr/share/doc/ncurses-&ncurses-version;</userinput></screen>
       <para>The instructions above don't create non-wide-character Ncurses
       libraries since no package installed by compiling from sources would link
       against them at runtime. However, the only known binary-only
-      applications that link against non-wide-character Ncurses libraries 
+      applications that link against non-wide-character Ncurses libraries
       require version 5.  If you must have such libraries because of some binary-only
       application or to be compliant with LSB, build the package again with the
       following commands:</para>
@@ -154,7 +178,7 @@ cp -v -R doc/* /usr/share/doc/ncurses-&ncurses-version;</userinput></screen>
             --without-normal \
             --without-debug  \
             --without-cxx-binding \
-            --with-abi-version=5 
+            --with-abi-version=5
 make sources libs
 cp -av lib/lib*.so.5* /usr/lib</userinput></screen>
     </note>
@@ -171,27 +195,27 @@ cp -av lib/lib*.so.5* /usr/lib</userinput></screen>
 
       <seglistitem>
         <seg>
-           captoinfo (link to tic), 
-           clear, 
-           infocmp, 
+           captoinfo (link to tic),
+           clear,
+           infocmp,
            infotocap (link to tic),
-           ncursesw6-config, 
-           reset (link to tset), 
-           tabs, 
-           tic, 
-           toe, 
-           tput, and 
+           ncursesw6-config,
+           reset (link to tset),
+           tabs,
+           tic,
+           toe,
+           tput, and
            tset
         </seg>
         <seg>
            libcursesw.so (symlink and linker script to libncursesw.so),
-           libformw.so, 
-           libmenuw.so, 
+           libformw.so,
+           libmenuw.so,
            libncursesw.so,
            libpanelw.so, and their non-wide-character counterparts without "w"
               in the library names.</seg>
         <seg>
-           /usr/share/tabset, 
+           /usr/share/tabset,
            /usr/share/terminfo, and
            /usr/share/doc/ncurses-&ncurses-version;
         </seg>
