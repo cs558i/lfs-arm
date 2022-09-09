@@ -95,6 +95,8 @@ cd       build</userinput></screen>
     --prefix=/usr                                  \
     --with-build-sysroot=$LFS                      \
     --enable-initfini-array                        \
+    --enable-default-pie                           \
+    --enable-default-ssp                           \
     --disable-nls                                  \
     --disable-multilib                             \
     --disable-decimal-float                        \
