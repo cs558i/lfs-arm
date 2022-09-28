@@ -26,10 +26,6 @@ for i in bin lib sbin; do
   ln -sv usr/$i $LFS/$i
 done
 
-case $(uname -m) in
-  aarch64) mkdir -pv $LFS/lib64 ;;
-esac</userinput></screen>
-
   <para>Programs in <xref linkend="chapter-temporary-tools"/> will be compiled
   with a cross-compiler (more details in section <xref
   linkend="ch-tools-toolchaintechnotes"/>). In order to separate this
