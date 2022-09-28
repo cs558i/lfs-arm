@@ -25,6 +25,7 @@
 for i in bin lib sbin; do
   ln -sv usr/$i $LFS/$i
 done
+</userinput></screen>
 
   <para>Programs in <xref linkend="chapter-temporary-tools"/> will be compiled
   with a cross-compiler (more details in section <xref
