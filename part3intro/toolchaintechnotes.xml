@@ -146,7 +146,8 @@
 
     <note>
       <para>Almost all the build systems use names of the form
-      cpu-vendor-kernel-os, referred to as the machine triplet. An astute
+      cpu-vendor-kernel-os, referred to as the machine triplet. The vendor
+      field is sometimes omitted. An astute
       reader may wonder why a <quote>triplet</quote> refers to a four component
       name. The reason is historical: initially, three component names were enough
       to designate a machine unambiguously, but as new machines and systems
