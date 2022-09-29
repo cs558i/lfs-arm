@@ -146,8 +146,8 @@
 
     <note>
       <para>Almost all the build systems use names of the form
-      cpu-vendor-kernel-os, referred to as the machine triplet. The vendor
-      field is sometimes omitted. An astute
+      cpu-vendor-kernel-os, referred to as the machine triplet. (Sometimes,
+      the vendor field is omitted.) An astute
       reader may wonder why a <quote>triplet</quote> refers to a four component
       name. The reason is historical: initially, three component names were enough
       to designate a machine unambiguously, but as new machines and systems
@@ -240,7 +240,8 @@
     would be able to build those libraries, but (1) the build system of
     gcc does not know that it is usable on pc, and (2) using it on pc
     would create a risk of linking to the pc libraries, since cc-lfs is a native
-    compiler. So we have to re-build libstdc++ later as a part of pass 2 gcc.</para>
+    compiler. So we have to re-build libstdc++ twice later on: as a part of
+    gcc stage 2, and then again in the chroot environment (gcc stage 3).</para>
 
   </sect2>
 
