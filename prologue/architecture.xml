@@ -46,6 +46,5 @@ basic Linux system. Some of the LFS/BLFS editors maintain a multilib fork
 of LFS, accessible at <ulink
 url="https://www.linuxfromscratch.org/~thomas/multilib/index.html"/>. But
 that's an advanced topic.</para>
->>>>>>> 7739ad32c (Edited for English idiom and general readability. Fixed some)
 
 </sect1>
