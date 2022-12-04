@@ -274,13 +274,8 @@ SEARCH_DIR("/usr/local/lib")
 SEARCH_DIR("/lib")
 SEARCH_DIR("/usr/lib");</computeroutput></screen>
 
-<<<<<<< HEAD
    <para>A 32-bit system may see a few different directories. For example, here
    is the output from a 32bit ARM  machine:</para>
-=======
-   <para>A 32-bit system may use a few other directories. For example, here
-   is the output from an i686 machine:</para>
->>>>>>> 30f3041a7 (Rewrote a cumbersome sentence to make it clearer. Capitalized the)
 
 <screen><computeroutput>SEARCH_DIR("/usr/armv6l-unknown-linux-gnueabihf/lib")
 SEARCH_DIR("/usr/local/lib")
