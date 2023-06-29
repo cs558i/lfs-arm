@@ -96,6 +96,7 @@ cd       build</userinput></screen>
     --disable-libatomic                            \
     --disable-libgomp                              \
     --disable-libquadmath                          \
+    --disable-libsanitizer                         \
     --disable-libssp                               \
     --disable-libvtv                               \
     --enable-languages=c,c++</userinput></screen>
@@ -149,6 +150,15 @@ cd       build</userinput></screen>
           <para>This option is automatically enabled when building a native
           compiler with a native compiler on ARM. But here, we build with
           a cross compiler, so we need to explicitly set this option.</para>
+        <term><parameter>--disable-libsanitizer</parameter></term>
+        <listitem>
+          <para>Disable GCC sanitizer runtime libraries.  They are not
+          needed for the temporary installation.  This switch is necessary
+          to build GCC without
+          <systemitem class='library'>libcrypt</systemitem> installed for
+          the target.  In <xref linkend='ch-tools-gcc-pass1'/> it was
+          implied by <parameter>--disable-libstdcxx</parameter>, but now we
+          have to explicitly pass it.</para>
         </listitem>
       </varlistentry>
 
