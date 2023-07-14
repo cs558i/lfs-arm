@@ -150,6 +150,10 @@ cd       build</userinput></screen>
           <para>This option is automatically enabled when building a native
           compiler with a native compiler on ARM. But here, we build with
           a cross compiler, so we need to explicitly set this option.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
         <term><parameter>--disable-libsanitizer</parameter></term>
         <listitem>
           <para>Disable GCC sanitizer runtime libraries.  They are not
