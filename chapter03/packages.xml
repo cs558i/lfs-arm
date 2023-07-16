@@ -538,7 +538,7 @@
       </listitem>
     </varlistentry>
 
-    <varlistentry revision="systemd">
+    <varlistentry>
       <term>MarkupSafe (&markupsafe-version;) - <token>&markupsafe-size;</token>:</term>
       <listitem>
         <para>Home page: <ulink url="&markupsafe-home;"/></para>
